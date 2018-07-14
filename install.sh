@@ -34,6 +34,8 @@ ADMINISTRATOR_PASSWORD=''
 # Configuration Variables
 TIMEZONE='America/Los_Angeles'
 KEYBOARD='us'
+FONT='Lat2-Terminus16.psfu'
+#setfont Let2-Terminus16.psfu -m 8859-2
 
 # Installation Functions
 setup() {
