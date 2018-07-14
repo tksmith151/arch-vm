@@ -1,3 +1,4 @@
 # arch-vm
+Run the following command:
 
-https://raw.githubusercontent.com/tksmith151/arch-vm/master/install.sh
+wget https://raw.githubusercontent.com/tksmith151/arch-vm/master/install.sh
