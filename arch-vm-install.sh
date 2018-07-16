@@ -11,7 +11,7 @@ parted -s "$VIRTUAL_DRIVE" \
     set 1 boot on
 
 echo 'FORMATTING FILESYSTEM'
-mkfs.ext4 -L root "$ROOT_PARTITION"
+mkfs.ext4 root "$ROOT_PARTITION"
 
 echo 'MOUNTING FILESYSTEM'
 mount "$ROOT_PARTITION" /mnt
@@ -26,7 +26,7 @@ echo 'CHANGING ROOT'
 wget https://raw.githubusercontent.com/tksmith151/arch-vm/master/arch-vm-configure.sh
 chmod +x arch-vm-configure.sh
 cp arch-vm-configure.sh /mnt
-arch-chroot /mnt ./arch-vm-configure.sh
+arch-chroot -U /mnt ./arch-vm-configure.sh
 
 #if [ -f /mnt/arch-vm-configure.sh ]
 #then

@@ -19,6 +19,9 @@ cat > /etc/hosts <<EOF
 ::1       localhost.localdomain localhost $HOSTNAME
 EOF
 
+echo 'ENABLING NETWORKING'
+systemctl enable dhcpcd
+
 echo 'SETTING ROOT PASSWORD'
 echo 'Enter the root password:'
 stty -echo
