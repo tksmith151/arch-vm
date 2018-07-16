@@ -1,6 +1,9 @@
 VIRTUAL_DRIVE='/dev/sda'
 ROOT_PARTITION="$VIRTUAL_DRIVE"1
 
+echo 'SYNCING SYSTEM CLOCK'
+timedatectl set-ntp true
+
 echo 'PARTITIONING VIRTUAL DRIVE'
 parted -s "$VIRTUAL_DRIVE" \
     mklabel msdos \
