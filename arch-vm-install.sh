@@ -21,6 +21,6 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 echo 'CHANGING ROOT'
 wget https://raw.githubusercontent.com/tksmith151/arch-vm/master/arch-vm-configure.sh
-chmod +x arch-vm-configure.ch
-cp /mnt /mnt/arch-vm-configure.sh
+chmod +x arch-vm-configure.sh
+cp arch-vm-configure.sh /mnt
 arch-chroot /mnt ./arch-vm-configure.sh
