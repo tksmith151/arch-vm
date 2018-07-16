@@ -20,10 +20,8 @@
 # SOFTWARE.
 
 # Filesystem Variabls
-DRIVE='/dev/sda'
-HOSTNAME='arch-vm'
-ENCRYPT_DRIVE='TRUE'
-ENCRYPTION_PASSWORD=''
+VIRTUAL_DRIVE='/dev/sda'
+HOSTNAME='arch'
 USE_TMPFS='TRUE'
 
 # User Variables
@@ -39,39 +37,16 @@ FONT='Lat2-Terminus16.psfu'
 
 # Installation Functions
 setup() {
-    local boot_dev="$DRIVE"1
-    local lvm_dev="$DRIVE"2
+    local root_partition="$VIRTUAL_DRIVE"1
 
     echo 'Creating partitions'
-    partition_drive "$DRIVE"
-
-    if [ -n "$ENCRYPT_DRIVE" ]
-    then
-        local lvm_part="/dev/mapper/lvm"
-
-        if [ -z "$ENCRYPTION_PASSWORD" ]
-        then
-            echo 'Enter a password to encrypt the disk:'
-            stty -echo
-            read DRIVE_PASSPHRASE
-            stty echo
-        fi
-
-        echo 'Encrypting partition'
-        encrypt_drive "$lvm_dev" "$DRIVE_PASSPHRASE" lvm
-
-    else
-        local lvm_part="$lvm_dev"
-    fi
-
-    echo 'Setting up LVM'
-    setup_lvm "$lvm_part" vg00
+    partition_drive "$VIRTUAL_DRIVE"
 
     echo 'Formatting filesystems'
-    format_filesystems "$boot_dev"
+    format_filesystems "$root_partition"
 
     echo 'Mounting filesystems'
-    mount_filesystems "$boot_dev"
+    mount_filesystems "$root_partition"
 
     echo 'Installing base system'
     install_base
@@ -92,8 +67,8 @@ setup() {
 }
 
 configure() {
-    local boot_dev="$DRIVE"1
-    local lvm_dev="$DRIVE"2
+    local root_partition="$VIRTUAL_DRIVE"1
+    local lvm_dev="$VIRTUAL_DRIVE"2
 
     echo 'Installing additional packages'
     install_packages
@@ -126,7 +101,7 @@ configure() {
     set_hosts "$HOSTNAME"
 
     echo 'Setting fstab'
-    set_fstab "$USE_TMPFS" "$boot_dev"
+    set_fstab "$USE_TMPFS" "$root_partition"
 
     echo 'Setting initial modules to load'
     set_modules_load
@@ -174,56 +149,24 @@ configure() {
 
 partition_drive() {
     local dev="$1"; shift
-
-    # 100 MB /boot partition, everything else under LVM
     parted -s "$dev" \
         mklabel msdos \
-        mkpart primary ext4 1 100M \
-        mkpart primary ext4 100M 100% \
-        set 1 boot on \
-        set 2 LVM on
-}
-
-encrypt_drive() {
-    local dev="$1"; shift
-    local passphrase="$1"; shift
-    local name="$1"; shift
-
-    echo -en "$passphrase" | cryptsetup -c aes-xts-plain -y -s 512 luksFormat "$dev"
-    echo -en "$passphrase" | cryptsetup luksOpen "$dev" lvm
-}
-
-setup_lvm() {
-    local partition="$1"; shift
-    local volgroup="$1"; shift
-
-    pvcreate "$partition"
-    vgcreate "$volgroup" "$partition"
-
-    # Create a 1GB swap partition
-    lvcreate -C y -L1G "$volgroup" -n swap
-
-    # Use the rest of the space for root
-    lvcreate -l '+100%FREE' "$volgroup" -n root
-
-    # Enable the new volumes
-    vgchange -ay
+        mkpart primary ext4 0% 100% \
+        set 1 boot on
 }
 
 format_filesystems() {
-    local boot_dev="$1"; shift
-
-    mkfs.ext4 -L boot "$boot_dev"
-    mkfs.ext4 -L root /dev/vg00/root
-    mkswap /dev/vg00/swap
+    local root_partition="$1"; shift
+    mkfs.ext4 -L root "$root_partition"
 }
 
 mount_filesystems() {
-    local boot_dev="$1"; shift
+    # NEED TO ADD SWAPFILE!
+    local root_partition="$1"; shift
 
     mount /dev/vg00/root /mnt
     mkdir /mnt/boot
-    mount "$boot_dev" /mnt/boot
+    mount "$root_partition" /mnt/boot
     swapon /dev/vg00/swap
 }
 
@@ -367,9 +310,9 @@ EOF
 
 set_fstab() {
     local tmp_on_tmpfs="$1"; shift
-    local boot_dev="$1"; shift
+    local root_partition="$1"; shift
 
-    local boot_uuid=$(get_uuid "$boot_dev")
+    local boot_uuid=$(get_uuid "$root_partition")
 
     cat > /etc/fstab <<EOF
 #
