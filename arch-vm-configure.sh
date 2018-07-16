@@ -27,7 +27,6 @@ stty echo
 echo -en "$ROOT_PASSWORD\n$ROOT_PASSWORD" | passwd
 
 echo 'CONFIGURING BOOT LOADER'
-pacman -S grub os-prober
 grub-install /dev/sda
 grub-mkconfig –o /boot/grub/grub.cfg
 

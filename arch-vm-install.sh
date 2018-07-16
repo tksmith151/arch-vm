@@ -14,7 +14,7 @@ echo 'MOUNTING FILESYSTEM'
 mount "$ROOT_PARTITION" /mnt
 
 echo 'INSTALLING BASE SYSTEM'
-pacstrap /mnt base
+pacstrap /mnt base grub
 
 echo 'GENERATING FILESYSTEM TABLE'
 genfstab -U /mnt >> /mnt/etc/fstab
