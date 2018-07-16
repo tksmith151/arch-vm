@@ -20,13 +20,13 @@ echo 'INSTALLING BASE SYSTEM'
 pacstrap /mnt base grub
 
 echo 'GENERATING FILESYSTEM TABLE'
-genfstab /mnt >> /mnt/etc/fstab
+genfstab -U /mnt >> /mnt/etc/fstab
 
 echo 'CHANGING ROOT'
 wget https://raw.githubusercontent.com/tksmith151/arch-vm/master/arch-vm-configure.sh
 chmod +x arch-vm-configure.sh
 cp arch-vm-configure.sh /mnt
-arch-chroot -U /mnt ./arch-vm-configure.sh
+arch-chroot /mnt ./arch-vm-configure.sh
 
 #if [ -f /mnt/arch-vm-configure.sh ]
 #then
