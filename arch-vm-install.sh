@@ -28,7 +28,7 @@ chmod +x arch-vm-configure.sh
 cp arch-vm-configure.sh /mnt
 arch-chroot /mnt ./arch-vm-configure.sh
 
-if [ -f /mnt/setup.sh ]
+if [ -f /mnt/arch-vm-configure.sh ]
 then
     echo 'ERROR: Something failed inside the chroot, not unmounting filesystems so you can investigate.'
     echo 'Make sure you unmount everything before you try to run this script again.'
