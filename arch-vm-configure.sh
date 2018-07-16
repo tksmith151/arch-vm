@@ -26,10 +26,9 @@ read ROOT_PASSWORD
 stty echo
 echo -en "$ROOT_PASSWORD\n$ROOT_PASSWORD" | passwd
 
-#echo "FINISHING CONFIGURATION"
-#exit
-
-
-
+echo 'CONFIGURING BOOT LOADER'
+pacman -S grub os-prober
+grub-install /dev/sda
+grub-mkconfig –o /boot/grub/grub.cfg
 
 rm /arch-vm-configure.sh
