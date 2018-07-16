@@ -26,8 +26,8 @@ read ROOT_PASSWORD
 stty echo
 echo -en "$ROOT_PASSWORD\n$ROOT_PASSWORD" | passwd
 
-echo "FINISHING CONFIGURATION"
-exit
+#echo "FINISHING CONFIGURATION"
+#exit
 
 
 
