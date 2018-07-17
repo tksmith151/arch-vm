@@ -1,22 +1,20 @@
-VIRTUAL_DRIVE='/dev/sda'
-ROOT_PARTITION="$VIRTUAL_DRIVE"1
-
 echo 'SYNCING SYSTEM CLOCK'
 timedatectl set-ntp true
 
 echo 'PARTITIONING VIRTUAL DRIVE'
-parted -s "$VIRTUAL_DRIVE" \
+parted -s /dev/sda \
     mklabel msdos \
     mkpart primary ext4 0% 100% \
     set 1 boot on
 
 echo 'FORMATTING FILESYSTEM'
-mkfs.ext4 "$ROOT_PARTITION"
+mkfs.ext4 /dev/sda1
 
 echo 'MOUNTING FILESYSTEM'
-mount "$ROOT_PARTITION" /mnt
+mount /dev/sda1 /mnt
 
 echo 'INSTALLING BASE SYSTEM'
+echo 'Server = http://mirrors.kernel.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 pacstrap /mnt base grub
 
 echo 'GENERATING FILESYSTEM TABLE'

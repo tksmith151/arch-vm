@@ -1,8 +1,5 @@
-HOSTNAME='arch-vm'
-TIME_ZONE='America/Los_Angeles'
-
 echo 'SETTING TIME ZONE'
-ln -sf "/usr/share/zoneinfo/$TIME_ZONE" /etc/localtime
+ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
 
 echo 'SETTING HARDWARE CLOCK'
 hwclock --systohc --utc
@@ -13,10 +10,10 @@ locale-gen
 echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
 
 echo 'SETTING HOSTNAME'
-echo '$HOSTNAME' > /etc/hostname
+echo 'arch-vm' > /etc/hostname
 cat > /etc/hosts <<EOF
-127.0.0.1 localhost.localdomain localhost $HOSTNAME
-::1       localhost.localdomain localhost $HOSTNAME
+127.0.0.1 localhost.localdomain localhost arch-vm
+::1       localhost.localdomain localhost arch-vm
 EOF
 
 echo 'ENABLING NETWORKING'
