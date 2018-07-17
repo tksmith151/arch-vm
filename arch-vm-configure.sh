@@ -20,11 +20,7 @@ echo 'ENABLING NETWORKING'
 systemctl enable dhcpcd
 
 echo 'SETTING ROOT PASSWORD'
-echo 'Enter the root password:'
-stty -echo
-read ROOT_PASSWORD
-stty echo
-echo -en "$ROOT_PASSWORD\n$ROOT_PASSWORD" | passwd
+echo -en "password\npassword" | passwd
 
 echo 'CONFIGURING BOOT LOADER'
 grub-install /dev/sda
