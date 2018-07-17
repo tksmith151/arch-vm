@@ -11,7 +11,7 @@ parted -s "$VIRTUAL_DRIVE" \
     set 1 boot on
 
 echo 'FORMATTING FILESYSTEM'
-mkfs.ext4 root "$ROOT_PARTITION"
+mkfs.ext4 "$ROOT_PARTITION"
 
 echo 'MOUNTING FILESYSTEM'
 mount "$ROOT_PARTITION" /mnt
