@@ -28,6 +28,6 @@ echo -en "$ROOT_PASSWORD\n$ROOT_PASSWORD" | passwd
 
 echo 'CONFIGURING BOOT LOADER'
 grub-install /dev/sda
-grub-mkconfig –o /boot/grub/grub.cfg
+grub-mkconfig -o /boot/grub/grub.cfg
 
 rm /arch-vm-configure.sh
