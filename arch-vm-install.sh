@@ -14,25 +14,16 @@ echo 'MOUNTING FILESYSTEM'
 mount /dev/sda1 /mnt
 
 echo 'INSTALLING BASE SYSTEM'
-echo 'Server = http://mirrors.kernel.org/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
 pacstrap /mnt base grub
 
 echo 'GENERATING FILESYSTEM TABLE'
 genfstab -U /mnt >> /mnt/etc/fstab
 
 echo 'CHANGING ROOT'
-wget https://raw.githubusercontent.com/tksmith151/arch-vm/master/arch-vm-configure.sh
-chmod +x arch-vm-configure.sh
-cp arch-vm-configure.sh /mnt
-arch-chroot /mnt ./arch-vm-configure.sh
+arch-chroot /mnt /bin/bash
 
-#if [ -f /mnt/arch-vm-configure.sh ]
-#then
-#    echo 'ERROR: Something failed inside the chroot, not unmounting filesystems so you can investigate.'
-#    echo 'Make sure you unmount everything before you try to run this script again.'
-#else
-#    echo 'UNMOUNTING FILESYSTEM'
-#    umount /mnt
-#    echo 'REBOOTING VIRTUAL MACHINE'
-#    shutdown -r now
-#fi
+echo 'UNMOUNTING FILESYSTEM'
+umount /mnt
+
+echo 'REBOOTING VIRTUAL MACHINE'
+shutdown -r now

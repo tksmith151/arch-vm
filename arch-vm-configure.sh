@@ -5,12 +5,12 @@ echo 'SETTING HARDWARE CLOCK'
 hwclock --systohc --utc
 
 echo 'GENERATING LOCALE FILES'
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo en_US.UTF-8 UTF-8 >> /etc/locale.gen
 locale-gen
-echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
+echo LANG=en_US.UTF-8 >> /etc/locale.conf
 
 echo 'SETTING HOSTNAME'
-echo 'arch-vm' > /etc/hostname
+echo arch-vm >> /etc/hostname
 cat > /etc/hosts <<EOF
 127.0.0.1 localhost.localdomain localhost arch-vm
 ::1       localhost.localdomain localhost arch-vm
