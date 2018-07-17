@@ -21,9 +21,9 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 echo 'CHANGING ROOT'
 wget https://raw.githubusercontent.com/tksmith151/arch-vm/master/configure-base.sh
-chmod +x arch-vm-configure.sh
-cp arch-vm-configure.sh /mnt
-arch-chroot /mnt ./arch-vm-configure.sh
+chmod +x configure-base.sh
+cp configure-base.sh /mnt
+arch-chroot /mnt ./configure-base.sh
 
 echo 'UNMOUNTING FILESYSTEM'
 umount -R /mnt
