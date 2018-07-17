@@ -22,8 +22,10 @@ genfstab -U /mnt >> /mnt/etc/fstab
 echo 'CHANGING ROOT'
 arch-chroot /mnt /bin/bash
 
-echo 'UNMOUNTING FILESYSTEM'
-umount /mnt
+echo 'Finished Script!'
 
-echo 'REBOOTING VIRTUAL MACHINE'
-shutdown -r now
+#echo 'UNMOUNTING FILESYSTEM'
+#umount /mnt
+
+#echo 'REBOOTING VIRTUAL MACHINE'
+#shutdown -r now
