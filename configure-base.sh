@@ -10,19 +10,19 @@ locale-gen
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 
 echo 'SETTING HOSTNAME'
-echo arch-vm >> /etc/hostname
-cat > /etc/hosts <<EOF
-127.0.0.1 localhost.localdomain localhost arch-vm
-::1       localhost.localdomain localhost arch-vm
-EOF
+echo arch-vm > /etc/hostname
+echo "127.0.0.1       localhost" > /etc/hosts
+echo "::1             localhost" >> /etc/hosts
+echo "127.0.1.1       arch-vm.localdomain arch-vm" >> /etc/hosts
 
 echo 'ENABLING NETWORKING'
-systemctl enable dhcpcd
+systemctl enable dhcpcd.service
 
 echo 'SETTING ROOT PASSWORD'
 echo -en "password\npassword" | passwd
 
 echo 'CONFIGURING BOOT LOADER'
+pacman -S --noconfirm grub
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
